@@ -48,24 +48,26 @@ mutation RegisterTeams {
   t3: register(input: { email: "maple@trees.com", password: "Password123!", firstName: "Team", lastName: "Maple" }) { message }
   t4: register(input: { email: "birch@trees.com", password: "Password123!", firstName: "Team", lastName: "Birch" }) { message }
 }
-
+```
 Step 2: Get Team IDs
 
 Run this query to find the IDs assigned to your new teams. Copy these 4 IDs, you will need them for Step 5.
 GraphQL
 
+```graphql
 query GetTeamIds {
   users(where: { email: { endsWith: "@trees.com" } }) {
     id
     lastName
   }
 }
-
+```
 Step 3: Login (Get Access Token)
 
 Login as "Team Oak" to get permission to create a tournament.
 GraphQL
 
+```graphql
 mutation Login {
   login(input: { email: "oak@trees.com", password: "Password123!" }) {
     token
@@ -81,24 +83,26 @@ mutation Login {
         Select Type: Bearer.
 
         Paste the token.
-
+```
 Step 4: Create the Tournament
 
 Create the tournament container.
 GraphQL
 
+```graphql
 mutation CreateTournament {
   createTournament(name: "Mini Tree Cup") {
     id
     name
   }
 }
-
+```
 Step 5: Add Teams & Start
 
 Action: Replace REPLACE_WITH_ID_X with the actual IDs you copied in Step 2.
 GraphQL
 
+```graphql
 mutation SetupBracket {
   # Add 4 Participants
   p1: addParticipant(tournamentId: 1, userId: "REPLACE_WITH_ID_OAK") { id }
@@ -112,12 +116,13 @@ mutation SetupBracket {
     bracket { id }
   }
 }
-
+```
 Step 6: View the Bracket
 
 See who is playing against whom!
 GraphQL
 
+```graphql
 query ViewMatches {
   tournaments(where: { id: { eq: 1 } }) {
     name
@@ -133,14 +138,16 @@ query ViewMatches {
     }
   }
 }
-
+```
 Step 7: Play a Match (Optional)
 
 Pick a matchId from Step 6 and set a winner (using the winner's User ID).
 GraphQL
 
+```graphql
 mutation PlayMatch {
   playMatch(matchId: 1, winnerId: "REPLACE_WITH_WINNER_ID") {
     winner { lastName }
   }
 }
+```
